@@ -70,6 +70,7 @@ YOUTUBE = os.getenv("YOUTUBE", "https://youtube.com/@NandEditz")
 GITHUB = os.getenv("GITHUB", "https://github.com/NoxxOP")
 DONATE = os.getenv("DONATE", "https://t.me/ShrutiBots/91")
 PRIVACY_LINK = os.getenv("PRIVACY_LINK", "https://graph.org/Privacy-Policy-05-01-30")
+SUPPORT_CHAT = "https://t.me/sunshine_gc"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # ⏱️ Duration & Playlist Settings
