@@ -125,14 +125,14 @@ async def greet_group(_, member: ChatMemberUpdated):
             member.chat.id,
             photo=welcomeimg,
             caption=f"""
-🌸✨ ──────────────── ✨🌸
+━━━━━━━━━━━━━━━
+🌸 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 {user.mention} 🌸  
+┏━━━━━━━━━━━━━━━┓
+   🤝 𝑮𝒍𝒂𝒅 𝒕𝒐 𝒉𝒂𝒗𝒆 𝒚𝒐𝒖 𝒊𝒏  
+   『 {member.chat.title} 』 🎶
+┗━━━━━━━━━━━━━━━┛
 
-👋 Hey {user.mention}, welcome to <b>{member.chat.title}</b> 🎀  
-
-💕 Glad to have you here!  
-🎶 Chill • Vibe • Enjoy the moment 🎶  
-
-🌸✨ ──────────────── ✨🌸
+💬 𝑭𝒆𝒆𝒍 𝒇𝒓𝒆𝒆 𝒕𝒐 𝒄𝒉𝒂𝒕 & 𝒆𝒏𝒋𝒐𝒚!
 """,
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("🎵 ᴀᴅᴅ ᴍᴇ ɪɴ ʏᴏᴜʀ ɢʀᴏᴜᴘ 🎵", url=f"https://t.me/{app.username}?startgroup=True")]
