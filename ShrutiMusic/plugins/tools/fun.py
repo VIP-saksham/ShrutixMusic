@@ -2,30 +2,11 @@
 # Location: Supaul, Bihar
 #
 # All rights reserved.
-#
-# This code is the intellectual property of Nand Yaduwanshi.
-# You are not allowed to copy, modify, redistribute, or use this
-# code for commercial or personal projects without explicit permission.
-#
-# Allowed:
-# - Forking for personal learning
-# - Submitting improvements via pull requests
-#
-# Not Allowed:
-# - Claiming this code as your own
-# - Re-uploading without credit or permission
-# - Selling or using commercially
-#
-# Contact for permissions:
-# Email: badboy809075@gmail.com
 
 import random
 import requests
-from pyrogram import filters
-from pyrogram.types import Message
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from pyrogram import Client, filters
-from pyrogram.types import Message
+from pyrogram import filters, Client
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.enums import ParseMode
 from nekosbest import Client as NekoClient
 
@@ -55,6 +36,8 @@ TEMPLATES = {
     "boob": "🍒 {mention}ꜱ ʙᴏᴏʙ ꜱɪᴢᴇ ɪꜱ {percent}!",
     "cock": "🍆 {mention} ᴄᴏᴄᴋ ꜱɪᴢᴇ ɪꜱ {percent}ᴄᴍ!",
 }
+
+
 def get_user_mention(message: Message) -> str:
     user = message.reply_to_message.from_user if message.reply_to_message else message.from_user
     return f"[{user.first_name}](tg://user?id={user.id})"
@@ -86,7 +69,7 @@ async def handle_percentage_command(_, message: Message):
 for cmd in ["cutie", "horny", "hot", "sexy", "gay", "lesbian", "boob", "cock"]:
     app.on_message(filters.command(cmd))(handle_percentage_command)
 
-#---------------------------------------------punch animantiation vala-----------------
+# ---------------- Animation Commands ----------------
 neko_client = NekoClient()
 
 commands = {
@@ -123,20 +106,17 @@ commands = {
     "shrug": {"emoji": "🤷", "text": "shrugged"},
     "sleep": {"emoji": "😴", "text": "slept"},
     "lurk": {"emoji": "👤", "text": "is lurking"},
-    
     "cry": {"emoji": "😭", "text": "cried"},
-"laugh": {"emoji": "😂", "text": "laughed"},
-"pout": {"emoji": "🥺", "text": "pouted"},
-"handhold": {"emoji": "🤝", "text": "held hands with"},
-"kick": {"emoji": "🦵", "text": "kicked"},
- "propose": {
-    "emoji": "💍",
-    "text": "proposed to"      
+    "laugh": {"emoji": "😂", "text": "laughed"},
+    "pout": {"emoji": "🥺", "text": "pouted"},
+    "handhold": {"emoji": "🤝", "text": "held hands with"},
+    "kick": {"emoji": "🦵", "text": "kicked"},
+    "propose": {"emoji": "💍", "text": "proposed to"},
 }
 
 
 def md_escape(text: str) -> str:
-    return text.replace('[', '\\[').replace(']', '\\]')
+    return text.replace("[", "\\[").replace("]", "\\]")
 
 
 async def get_animation(action: str):
@@ -146,10 +126,6 @@ async def get_animation(action: str):
     except Exception as e:
         print(f"❌ NekoClient error: {e}")
         return None
-if command == "propose":
-    gif_url = "https://ibb.co/qYzrRFgB"  # apna custom propose GIF link daalna
-else:
-    gif_url = await get_animation(command)
 
 
 @app.on_message(filters.command(list(commands.keys())) & ~filters.forwarded & ~filters.via_bot)
@@ -159,7 +135,12 @@ async def animation_command(client: Client, message: Message):
     if command not in commands:
         return await message.reply_text("⚠️ That command is not supported.")
 
-    gif_url = await get_animation(command)
+    # special case for propose
+    if command == "propose":
+        gif_url = "https://media.tenor.com/abcd1234.gif"  # apna custom propose GIF link daalna
+    else:
+        gif_url = await get_animation(command)
+
     if not gif_url:
         return await message.reply_text("❌ Couldn't fetch the animation. Please try again later.")
 
@@ -172,71 +153,39 @@ async def animation_command(client: Client, message: Message):
     else:
         target = sender
 
-    action_text = commands[command]['text']
-    emoji = commands[command]['emoji']
+    action_text = commands[command]["text"]
+    emoji = commands[command]["emoji"]
 
     caption = f"**{sender} {action_text} {target}!** {emoji}"
 
     await message.reply_animation(
         animation=gif_url,
         caption=caption,
-        parse_mode=ParseMode.MARKDOWN
+        parse_mode=ParseMode.MARKDOWN,
     )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#------------------------------------------------------
+# ---------------- Dice Games ----------------
 @app.on_message(
     filters.command(
-        [
-            "dice",
-            "ludo",
-            "dart",
-            "basket",
-            "basketball",
-            "football",
-            "slot",
-            "bowling",
-            "jackpot",
-        ]
+        ["dice", "ludo", "dart", "basket", "basketball", "football", "slot", "bowling", "jackpot"]
     )
 )
 async def dice(c, m: Message):
     command = m.text.split()[0]
-    if command == "/dice" or command == "/ludo":
-
+    if command in ["/dice", "/ludo"]:
         value = await c.send_dice(m.chat.id, reply_to_message_id=m.id)
         await value.reply_text("ʏᴏᴜʀ sᴄᴏʀᴇ ɪs {0}".format(value.dice.value))
-
     elif command == "/dart":
-
         value = await c.send_dice(m.chat.id, emoji="🎯", reply_to_message_id=m.id)
         await value.reply_text("ʏᴏᴜʀ sᴄᴏʀᴇ ɪs {0}".format(value.dice.value))
-
-    elif command == "/basket" or command == "/basketball":
+    elif command in ["/basket", "/basketball"]:
         basket = await c.send_dice(m.chat.id, emoji="🏀", reply_to_message_id=m.id)
         await basket.reply_text("ʏᴏᴜʀ sᴄᴏʀᴇ ɪs {0}".format(basket.dice.value))
-
     elif command == "/football":
         value = await c.send_dice(m.chat.id, emoji="⚽", reply_to_message_id=m.id)
         await value.reply_text("ʏᴏᴜʀ sᴄᴏʀᴇ ɪs {0}".format(value.dice.value))
-
-    elif command == "/slot" or command == "/jackpot":
+    elif command in ["/slot", "/jackpot"]:
         value = await c.send_dice(m.chat.id, emoji="🎰", reply_to_message_id=m.id)
         await value.reply_text("ʏᴏᴜʀ sᴄᴏʀᴇ ɪs {0}".format(value.dice.value))
     elif command == "/bowling":
@@ -244,6 +193,7 @@ async def dice(c, m: Message):
         await value.reply_text("ʏᴏᴜʀ sᴄᴏʀᴇ ɪs {0}".format(value.dice.value))
 
 
+# ---------------- Bored API ----------------
 bored_api_url = "https://apis.scrimba.com/bored/api/activity"
 
 
@@ -274,15 +224,3 @@ __HELP__ = """
 • `/bowling`: Pʟᴀʏs ʙᴏᴡʟɪɴɢ.
 • `/bored`: Gᴇᴛs ʀᴀɴᴅᴏᴍ ᴀᴄᴛɪᴠɪᴛʏ ɪғ ʏᴏᴜ'ʀᴇ ʙᴏʀᴇᴅ.
 """
-
-
-# ©️ Copyright Reserved - @NoxxOP  Nand Yaduwanshi
-
-# ===========================================
-# ©️ 2025 Nand Yaduwanshi (aka @NoxxOP)
-# 🔗 GitHub : https://github.com/NoxxOP/HELLBOTS
-# 📢 Telegram Channel : https://t.me/ShrutiBots
-# ===========================================
-
-
-# ❤️ Love From ShrutiBots 
