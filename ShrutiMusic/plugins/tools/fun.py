@@ -29,7 +29,7 @@ from pyrogram.types import Message
 from pyrogram.enums import ParseMode
 from nekosbest import Client as NekoClient
 
-from HELLBOTS import app
+from ShrutiMusic import app
 from config import SUPPORT_CHAT
 
 BUTTON = InlineKeyboardMarkup([[InlineKeyboardButton("ꜱᴜᴘᴘᴏʀᴛ", url=SUPPORT_CHAT)]])
